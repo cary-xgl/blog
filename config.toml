@@ -41,6 +41,10 @@ customCSS = []
 customSCSS = []
 # Custom JS
 customJS = []
+
+# https://swapoff.org/chroma/playground/
+[markup.highlight]
+  style = 'manni'
 # disableComments = false
 
 # If you want to use fathom(https://usefathom.com) for analytics, add this section
