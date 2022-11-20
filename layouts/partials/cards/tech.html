@@ -13,8 +13,9 @@
         <a
         href="{{ .RelPermalink | relLangURL }}"
         class="float-right btn btn-outline-info btn-sm"
-        >{{ i18n "read" }}</a
         >
+        {{ block "reading-time" . }} {{ end }}
+        </a>
       </div>
     </div>
   </a>

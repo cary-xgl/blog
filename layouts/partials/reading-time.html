@@ -1,0 +1,11 @@
+{{ define "reading-time" }}
+    {{ $readTime := mul (div (countwords .Content) 220.0) 60 }}
+    {{ $minutes := math.Floor (div $readTime 60) }}
+    {{ $seconds := mod $readTime 60 }}
+    {{ i18n "read" (dict "minutes" $minutes "seconds" $seconds) }}
+{{ end }}
+
+<span class="reading-time">
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+    {{ block "reading-time" . }} {{ end }}
+</span>

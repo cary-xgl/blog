@@ -57,6 +57,8 @@ params:
   # specify whether you want the language flags to be displayed. 
   showFlags: true
 
+  enableTags: false
+
   background: /images/background.png
 
   logo:
