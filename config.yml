@@ -1,0 +1,105 @@
+baseURL: https://heartfelt-mandazi-b13d7f.netlify.app
+
+languageCode: en
+defaultContentLanguage: en
+title: "Cary's Blog"
+theme: "toha"
+
+# Manage languages
+# For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
+languages:
+  en:
+    languageName: "English"
+    weight: 1
+# Control TOC depth
+markup:
+  tableOfContents:
+    startLevel: 2
+    endLevel: 6
+    ordered: false
+  highlight:
+    # style: staroffice
+    # style: autumn
+    style: emacs
+
+# At least HTML and JSON are required for the main HTML content and
+# client-side JavaScript search
+outputs:
+  home:
+  - HTML
+  - RSS
+  - JSON
+
+# Enable global emoji support
+enableEmoji: true
+
+hideFromNavbar: true
+
+# Site parameters
+params:
+  features:
+    comment:
+      enable: true
+      utteranc:
+        repo: cary-xgl/blog
+        issueTerm: pathname
+        theme: github-light
+  # GitHub repo URL and branch of your site
+  gitRepo: https://github.com/cary-xgl/blog
+  gitBranch: main
+
+  # specify whether you want to write some blog posts or not
+  enableBlogPost: false
+
+  # specify whether you want to show Table of Contents in reading page
+  enableTOC: true
+
+  # specify whether you want the language flags to be displayed. 
+  showFlags: true
+
+  background: /images/background.png
+
+  # logo:
+  #   main: /images/site/logo.jpg
+  #   inverted: /images/site/logo.jpg
+  #   favicon: /images/site/logo.jpg
+
+  footer:
+    navigation:
+      enable: false
+      customMenus: true
+    contactMe:
+      enable: true
+    newsletter:
+      enable: false
+
+  customMenus:
+  - name: 技术
+    url: /tech
+    hideFromNavbar: false
+    showOnFooter: true
+  - name: 摄影
+    url: /photography
+    hideFromNavbar: false
+    showOnFooter: true
+
+  darkMode:
+    provider: darkreader
+    enable: true
+    default: system
+
+# site.Params.footer.navigation.customMenus | default true }}
+# {{ $contactMeEnabled   := site.Params.footer.contactMe.enable   | default true }}
+# {{ $newsletterEnabled  := site.Params.footer.newsletter.enable  | default true }}
+# {{ $credentialsEnabled := site.Params.footer.credentials.enable
+
+  # Provide newsletter configuration. 
+  # This feature has been implemented for Mailchimp only for now.
+  # You can also hide it from the footer.
+  newsletter:
+    # specify whether you want to display the newsletter form 
+    enable: false
+    # specify which newsletter provider you want to use
+    # provider: mailchimp
+    # specify the target URL for the subscription form
+    # mailchimpURL: https://github.us1.list-manage.com/subscribe/post?u=19de52a4603135aae97163fd8&amp;id=094a24c76e
