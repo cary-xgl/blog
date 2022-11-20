@@ -42,7 +42,7 @@ params:
       enable: true
       utteranc:
         repo: cary-xgl/blog
-        issueTerm: pathname
+        issueTerm: title
         theme: github-light
   # GitHub repo URL and branch of your site
   gitRepo: https://github.com/cary-xgl/blog
