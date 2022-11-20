@@ -59,10 +59,10 @@ params:
 
   background: /images/background.png
 
-  # logo:
-  #   main: /images/site/logo.jpg
-  #   inverted: /images/site/logo.jpg
-  #   favicon: /images/site/logo.jpg
+  logo:
+    main: /images/site/main-logo.png
+    inverted: /images/site/logo.png
+    favicon: /images/site/logo.png
 
   footer:
     navigation:
