@@ -84,6 +84,14 @@ params:
     url: /photography
     hideFromNavbar: false
     showOnFooter: true
+  - name: 健身
+    url: /fitness
+    hideFromNavbar: false
+    showOnFooter: true
+  - name: 随便看看
+    url: /record
+    hideFromNavbar: false
+    showOnFooter: true
 
   darkMode:
     provider: darkreader
