@@ -169,7 +169,7 @@
       {{ end }}
 
       <!-- Keep backward compatibility with old config.yaml -->
-      {{ if site.DisqusShortname }}
+      {{ if site.Config.Services.Disqus.Shortname }}
         {{ partial "comments/disqus.html" (dict (slice "disqus" "shortName")  site.DisqusShortname) }}
       {{ end }}
 
