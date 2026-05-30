@@ -9,6 +9,7 @@
   {{ if eq (len $pages) 0 }}
     {{ $pages = .Pages }}
   {{ end }}
+  {{ $pages = $pages.ByWeight }}
 
   <ul class="posts">
     {{ range $pages }}

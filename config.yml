@@ -33,10 +33,10 @@ params:
   description: "Cary's personal website"
   favicon: /images/favicon-32x32.png
   mainSections:
+    - record
     - tech
     - photography
     - fitness
-    - record
   excludedTypes:
     - page
   customCSS:
@@ -52,20 +52,20 @@ params:
 
 menu:
   main:
+    - name: 随想
+      url: /record/
+      weight: 1
     - name: 首页
       url: /
-      weight: 1
+      weight: 2
     - name: 技术
       url: /tech/
-      weight: 2
+      weight: 3
     - name: 摄影
       url: /photography/
-      weight: 3
+      weight: 4
     - name: 健身
       url: /fitness/
-      weight: 4
-    - name: 随便看看
-      url: /record/
       weight: 5
     - name: 标签
       url: /tags/
