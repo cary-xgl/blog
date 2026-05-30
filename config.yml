@@ -44,7 +44,7 @@ params:
   gitRepo: https://github.com/cary-xgl/blog
   gitBranch: main
   utterances:
-    enable: true
+    enable: false
     repo: cary-xgl/blog
     issueTerm: pathname
     label: Comment
