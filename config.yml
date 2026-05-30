@@ -1,115 +1,75 @@
 baseURL: https://heartfelt-mandazi-b13d7f.netlify.app
-
-languageCode: en
-defaultContentLanguage: en
+languageCode: zh-cn
+defaultContentLanguage: zh
 title: "Cary's Blog"
-theme: "toha"
+theme: "archie"
+copyright: "Cary"
+enableEmoji: true
+hasCJKLanguage: true
 
-# Manage languages
-# For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
-languages:
-  en:
-    languageName: "English"
-    weight: 1
-# Control TOC depth
+pagination:
+  pagerSize: 12
+
 markup:
   tableOfContents:
     startLevel: 2
     endLevel: 6
     ordered: false
   highlight:
-    # style: staroffice
-    # style: autumn
     style: emacs
+    codeFences: true
+    guessSyntax: true
 
-# At least HTML and JSON are required for the main HTML content and
-# client-side JavaScript search
-outputs:
-  home:
-  - HTML
-  - RSS
-  - JSON
+taxonomies:
+  category: categories
+  series: series
+  tag: tags
+  author: authors
 
-# Enable global emoji support
-enableEmoji: true
-
-hideFromNavbar: true
-
-# Site parameters
 params:
-  features:
-    comment:
-      enable: true
-      utteranc:
-        repo: cary-xgl/blog
-        issueTerm: title
-        theme: github-light
-  # GitHub repo URL and branch of your site
+  mode: toggle
+  useCDN: false
+  subtitle: "随便写写"
+  description: "Cary's personal website"
+  favicon: /images/favicon-32x32.png
+  mainSections:
+    - tech
+    - photography
+    - fitness
+    - record
+  excludedTypes:
+    - page
+  customCSS:
+    - css/archie-custom.css
   gitRepo: https://github.com/cary-xgl/blog
   gitBranch: main
-
-  # specify whether you want to write some blog posts or not
-  enableBlogPost: false
-
-  # specify whether you want to show Table of Contents in reading page
-  enableTOC: true
-
-  # specify whether you want the language flags to be displayed. 
-  showFlags: true
-
-  enableTags: false
-
-  background: /images/background.png
-
-  logo:
-    main: /images/site/main-logo.png
-    inverted: /images/site/logo.png
-    favicon: /images/site/logo.png
-
-  footer:
-    navigation:
-      enable: false
-      customMenus: true
-    contactMe:
-      enable: true
-    newsletter:
-      enable: false
-
-  customMenus:
-  - name: 技术
-    url: /tech
-    hideFromNavbar: false
-    showOnFooter: true
-  - name: 摄影
-    url: /photography
-    hideFromNavbar: false
-    showOnFooter: true
-  - name: 健身
-    url: /fitness
-    hideFromNavbar: false
-    showOnFooter: true
-  - name: 随便看看
-    url: /record
-    hideFromNavbar: false
-    showOnFooter: true
-
-  darkMode:
-    provider: darkreader
+  utterances:
     enable: true
-    default: system
+    repo: cary-xgl/blog
+    issueTerm: pathname
+    label: Comment
+    theme: github-light
 
-# site.Params.footer.navigation.customMenus | default true }}
-# {{ $contactMeEnabled   := site.Params.footer.contactMe.enable   | default true }}
-# {{ $newsletterEnabled  := site.Params.footer.newsletter.enable  | default true }}
-# {{ $credentialsEnabled := site.Params.footer.credentials.enable
-
-  # Provide newsletter configuration. 
-  # This feature has been implemented for Mailchimp only for now.
-  # You can also hide it from the footer.
-  newsletter:
-    # specify whether you want to display the newsletter form 
-    enable: false
-    # specify which newsletter provider you want to use
-    # provider: mailchimp
-    # specify the target URL for the subscription form
-    # mailchimpURL: https://github.us1.list-manage.com/subscribe/post?u=19de52a4603135aae97163fd8&amp;id=094a24c76e
+menu:
+  main:
+    - name: 首页
+      url: /
+      weight: 1
+    - name: 技术
+      url: /tech/
+      weight: 2
+    - name: 摄影
+      url: /photography/
+      weight: 3
+    - name: 健身
+      url: /fitness/
+      weight: 4
+    - name: 随便看看
+      url: /record/
+      weight: 5
+    - name: 标签
+      url: /tags/
+      weight: 6
+    - name: 搜索
+      url: /search/
+      weight: 7

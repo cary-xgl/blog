@@ -1,0 +1,23 @@
+{{ define "main" }}
+  {{ if isset .Data "Term" }}
+    <h1>标签：{{ .Data.Term }}</h1>
+  {{ else }}
+    <h1 class="page-title">{{ .Title }}</h1>
+  {{ end }}
+
+  {{ $pages := .RegularPagesRecursive }}
+  {{ if eq (len $pages) 0 }}
+    {{ $pages = .Pages }}
+  {{ end }}
+
+  <ul class="posts">
+    {{ range $pages }}
+      {{ if and (not .Params.hidden) (not (in ($.Site.Params.excludedTypes | default (slice "page")) .Type)) }}
+        <li class="post">
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <span class="meta">{{ dateFormat "2006-01-02" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</span>
+        </li>
+      {{ end }}
+    {{ end }}
+  </ul>
+{{ end }}

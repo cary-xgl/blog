@@ -1,0 +1,14 @@
+{{ $utterances := .Site.Params.utterances }}
+{{ if and $utterances $utterances.enable $utterances.repo }}
+  <div class="utterances-frame">
+    <script
+      src="https://utteranc.es/client.js"
+      repo="{{ $utterances.repo }}"
+      issue-term="{{ $utterances.issueTerm | default "pathname" }}"
+      label="{{ $utterances.label | default "Comment" }}"
+      theme="{{ $utterances.theme | default "github-light" }}"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </div>
+{{ end }}
