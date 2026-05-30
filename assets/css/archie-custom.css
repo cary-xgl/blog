@@ -50,12 +50,12 @@ header nav {
   vertical-align: 0.15em;
 }
 
-.posts {
+.section-posts {
   padding-left: 0;
   padding-inline-start: 0;
 }
 
-.posts .post {
+.section-posts .post {
   align-items: baseline;
   column-gap: 0.55rem;
   display: grid;
@@ -63,14 +63,14 @@ header nav {
   text-indent: 0;
 }
 
-.posts .post::before {
+.section-posts .post::before {
   content: "*";
   color: var(--color-primary, #dc143c);
   font-weight: bold;
   grid-column: 1;
 }
 
-.post-title-line {
+.section-posts .post-title-line {
   align-items: baseline;
   display: inline-flex;
   flex-wrap: wrap;
@@ -79,17 +79,17 @@ header nav {
   min-width: 0;
 }
 
-.post-title-line a {
+.section-posts .post-title-line a {
   overflow-wrap: anywhere;
 }
 
-.posts .post .pinned-label {
+.section-posts .post .pinned-label {
   flex: 0 0 auto;
   margin-left: 0;
   vertical-align: 0.08em;
 }
 
-.posts .meta {
+.section-posts .meta {
   display: inline-block;
   white-space: nowrap;
 }

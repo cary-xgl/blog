@@ -1,4 +1,5 @@
 {{ define "main" }}
+  {{ $isTerm := isset .Data "Term" }}
   {{ if isset .Data "Term" }}
     <h1>标签：{{ .Data.Term }}</h1>
   {{ else }}
@@ -11,15 +12,20 @@
   {{ end }}
   {{ $pages = $pages.ByWeight }}
 
-  <ul class="posts">
+  <ul class="posts{{ if not $isTerm }} section-posts{{ end }}">
     {{ range $pages }}
       {{ if and (not .Params.hidden) (not (in ($.Site.Params.excludedTypes | default (slice "page")) .Type)) }}
         <li class="post{{ if .Params.pinned }} is-pinned{{ end }}">
-          <span class="post-title-line">
+          {{ if $isTerm }}
             <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            {{ if .Params.pinned }}<span class="pinned-label">置顶</span>{{ end }}
             <span class="meta">{{ dateFormat "2006-01-02" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</span>
-          </span>
+          {{ else }}
+            <span class="post-title-line">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              {{ if .Params.pinned }}<span class="pinned-label">置顶</span>{{ end }}
+              <span class="meta">{{ dateFormat "2006-01-02" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</span>
+            </span>
+          {{ end }}
         </li>
       {{ end }}
     {{ end }}
