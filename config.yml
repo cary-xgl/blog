@@ -52,11 +52,11 @@ params:
 
 menu:
   main:
-    - name: 随想
-      url: /thoughts/
-      weight: 1
     - name: 首页
       url: /
+      weight: 1
+    - name: 随想
+      url: /thoughts/
       weight: 2
     - name: 技术
       url: /tech/
