@@ -1,9 +1,9 @@
 ---
 title: "技术"
-tags: ["技术","学习"]
+tags: ["技术"]
 menu:
   tech:
-    name: 
-    identifier: 技术-总 
+    name: "技术"
+    identifier: "技术" 
     weight: 10
 ---
