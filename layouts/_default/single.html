@@ -12,8 +12,12 @@
           </div>
         </div>
 
-        {{ with .Resources.GetMatch "hero.*" }}
-          <img class="post-hero" src="{{ .RelPermalink }}" alt="{{ $.Title }}">
+        {{ with .Params.hero }}
+          <img class="post-hero" src="{{ . | relURL }}" alt="{{ $.Title }}">
+        {{ else }}
+          {{ with .Resources.GetMatch "hero.*" }}
+            <img class="post-hero" src="{{ .RelPermalink }}" alt="{{ $.Title }}">
+          {{ end }}
         {{ end }}
 
         {{ with .Params.tldr }}
