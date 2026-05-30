@@ -27,10 +27,27 @@ header nav {
   padding: 1.35rem 0;
 }
 
+.list-item.is-pinned {
+  border-bottom-color: #c7b37a;
+}
+
 .list-item h1 {
   font-size: 1.35rem;
   line-height: 1.35;
   margin-bottom: 0.35rem;
+}
+
+.pinned-label {
+  border: 1px solid #b38a2e;
+  border-radius: 4px;
+  color: #8a6417;
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-left: 0.45rem;
+  padding: 0.18rem 0.35rem;
+  vertical-align: 0.15em;
 }
 
 .article-meta {
@@ -81,5 +98,14 @@ header nav {
 
   .list-item {
     border-bottom-color: #333;
+  }
+
+  .list-item.is-pinned {
+    border-bottom-color: #6f5b2f;
+  }
+
+  .pinned-label {
+    border-color: #8f7232;
+    color: #d4b66a;
   }
 }

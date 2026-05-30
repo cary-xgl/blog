@@ -15,8 +15,11 @@
         {{ $pages := where .Site.RegularPages "Type" "in" $sections }}
         {{ $paginator := .Paginate ((where $pages "Params.hidden" "ne" true).ByWeight) }}
         {{ range $paginator.Pages }}
-          <section class="list-item">
-            <h1 class="title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+          <section class="list-item{{ if .Params.pinned }} is-pinned{{ end }}">
+            <h1 class="title">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              {{ if .Params.pinned }}<span class="pinned-label">置顶</span>{{ end }}
+            </h1>
             <div class="article-meta">
               <time>{{ dateFormat "2006-01-02" .Date }}</time>
               {{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}

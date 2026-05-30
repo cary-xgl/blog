@@ -14,8 +14,9 @@
   <ul class="posts">
     {{ range $pages }}
       {{ if and (not .Params.hidden) (not (in ($.Site.Params.excludedTypes | default (slice "page")) .Type)) }}
-        <li class="post">
+        <li class="post{{ if .Params.pinned }} is-pinned{{ end }}">
           <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          {{ if .Params.pinned }}<span class="pinned-label">置顶</span>{{ end }}
           <span class="meta">{{ dateFormat "2006-01-02" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</span>
         </li>
       {{ end }}
