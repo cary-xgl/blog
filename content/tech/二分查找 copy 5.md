@@ -3,8 +3,6 @@ title: "二分查找"
 date: 2025-05-13
 tags: ["算法", "二分查找"]
 categories: ["技术"]
-aliases:
-  - "/tech/算法/二分查找 copy 5/"
 ---
 
 
