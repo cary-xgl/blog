@@ -52,25 +52,21 @@ header nav {
 
 .posts .post {
   align-items: baseline;
+  column-gap: 0.55rem;
   display: flex;
-  gap: 0.65rem;
-  justify-content: space-between;
-}
-
-.post-title-group {
-  align-items: baseline;
-  display: inline-flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  min-width: 0;
+  row-gap: 0.12rem;
 }
 
-.post-title-group .pinned-label {
+.posts .post > a {
+  display: inline-block;
+}
+
+.posts .post .pinned-label {
   margin-left: 0;
 }
 
 .posts .meta {
-  flex: 0 0 auto;
   white-space: nowrap;
 }
 
@@ -131,13 +127,5 @@ header nav {
   .pinned-label {
     border-color: #8f7232;
     color: #d4b66a;
-  }
-}
-
-@media (max-width: 520px) {
-  .posts .post {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.15rem;
   }
 }
