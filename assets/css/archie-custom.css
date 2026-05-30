@@ -50,23 +50,14 @@ header nav {
   vertical-align: 0.15em;
 }
 
-.posts .post {
-  align-items: baseline;
-  column-gap: 0.55rem;
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 0.12rem;
-}
-
-.posts .post > a {
-  display: inline-block;
-}
-
 .posts .post .pinned-label {
-  margin-left: 0;
+  margin-left: 0.35rem;
+  margin-right: 0.5rem;
+  vertical-align: 0.08em;
 }
 
 .posts .meta {
+  display: inline-block;
   white-space: nowrap;
 }
 
