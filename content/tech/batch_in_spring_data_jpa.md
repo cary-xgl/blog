@@ -1,7 +1,7 @@
 ---
 title: "Spring Data JPA 中的 Batch 操作"
 date: 2023-09-05
-tags: ["Spring-Data-JPA"]
+tags: ["Jpa", "Spring"]
 categories: ["技术"]
 ---
 
