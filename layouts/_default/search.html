@@ -41,5 +41,6 @@
     </noscript>
   </article>
 </main>
-<script defer src="{{ absURL "js/search.js" }}"></script>
+{{ $searchJsHash := md5 (readFile "static/js/search.js") }}
+<script defer src="{{ absURL (printf "js/search.js?v=%s" $searchJsHash) }}"></script>
 {{ end }}
