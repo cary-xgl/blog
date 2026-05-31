@@ -12,12 +12,14 @@
           </div>
         </div>
 
-        {{ with .Params.hero }}
-          <img class="post-hero" src="{{ . | relURL }}" alt="{{ $.Title }}">
-        {{ else }}
-          {{ with .Site.GetPage "section" .Section }}
-            {{ with .Resources.GetMatch "hero.*" }}
-              <img class="post-hero" src="{{ .RelPermalink }}" alt="{{ $.Title }}">
+        {{ if not .Params.hideHero }}
+          {{ with .Params.hero }}
+            <img class="post-hero" src="{{ . | relURL }}" alt="{{ $.Title }}">
+          {{ else }}
+            {{ with .Site.GetPage "section" .Section }}
+              {{ with .Resources.GetMatch "hero.*" }}
+                <img class="post-hero" src="{{ .RelPermalink }}" alt="{{ $.Title }}">
+              {{ end }}
             {{ end }}
           {{ end }}
         {{ end }}
