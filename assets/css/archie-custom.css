@@ -1,0 +1,155 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.75;
+}
+
+.content {
+  max-width: 760px;
+}
+
+header {
+  align-items: baseline;
+  gap: 1rem;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.site-description p {
+  color: #555;
+}
+
+.list-item {
+  border-bottom: 1px solid #ddd;
+  padding: 1.35rem 0;
+}
+
+.list-item.is-pinned {
+  border-bottom-color: #c7b37a;
+}
+
+.list-item h1 {
+  font-size: 1.35rem;
+  line-height: 1.35;
+  margin-bottom: 0.35rem;
+}
+
+.pinned-label {
+  border: 1px solid #b38a2e;
+  border-radius: 4px;
+  color: #8a6417;
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-left: 0.45rem;
+  padding: 0.18rem 0.35rem;
+  vertical-align: 0.15em;
+}
+
+.section-posts {
+  padding-left: 0;
+  padding-inline-start: 0;
+}
+
+.section-posts .post {
+  align-items: baseline;
+  column-gap: 0.55rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  text-indent: 0;
+}
+
+.section-posts .post::before {
+  content: "*";
+  color: var(--color-primary, #dc143c);
+  font-weight: bold;
+  grid-column: 1;
+}
+
+.section-posts .post-title-line {
+  align-items: baseline;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  grid-column: 2;
+  min-width: 0;
+}
+
+.section-posts .post-title-line a {
+  overflow-wrap: anywhere;
+}
+
+.section-posts .post .pinned-label {
+  flex: 0 0 auto;
+  margin-left: 0;
+  vertical-align: 0.08em;
+}
+
+.section-posts .meta {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.article-meta {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.post-hero {
+  border-radius: 6px;
+  display: block;
+  margin: 1.2rem 0 1.8rem;
+  max-height: 420px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.body img {
+  border-radius: 4px;
+  height: auto;
+  max-width: 100%;
+}
+
+.body blockquote {
+  border-left: 3px solid #777;
+  color: #555;
+  margin-left: 0;
+  padding-left: 1rem;
+}
+
+.post-tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.utterances-frame {
+  margin-top: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .site-description p,
+  .article-meta,
+  .body blockquote {
+    color: #bbb;
+  }
+
+  .list-item {
+    border-bottom-color: #333;
+  }
+
+  .list-item.is-pinned {
+    border-bottom-color: #6f5b2f;
+  }
+
+  .pinned-label {
+    border-color: #8f7232;
+    color: #d4b66a;
+  }
+}
