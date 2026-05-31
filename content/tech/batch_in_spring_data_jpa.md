@@ -5,10 +5,10 @@ tags: ["Spring-Data-JPA"]
 categories: ["技术"]
 ---
 
-> 这篇主要记一下，怎么确认 JPA 到底有没有真的按 batch 在跑。
+> 怎么确认 JPA 到底有没有真的按 batch 在跑。
 <!--more-->
 
-环境大概是：
+环境信息：
 
 - MySQL 8.1
 - Hibernate 5.4
@@ -17,10 +17,7 @@ categories: ["技术"]
 
 ### 代码这一层
 
-只看 Hibernate 打出来的日志，其实不太够。  
-它打印的东西更像是 ORM 这一层“准备做什么”，不一定等价于数据库那边“最后怎么执行”。
-
-所以更直接一点的办法，是在数据源这一层挂代理，把真正发出去的 SQL 抓出来看。
+只看 Hibernate 打出来的日志，不太够。由于 Hibernate 输出的 log 是比较高层的抽象，无法根据 Hibernate 输出的 SQL 来判断实际的 SQL 执行情况，所以此处使用一个数据源代理，来跟踪 SQL 语句的执行情况。
 
 Maven 依赖：
 
@@ -34,7 +31,7 @@ Maven 依赖：
 <!-- see https://github.com/jdbc-observations/datasource-proxy -->
 ```
 
-和 Spring 集成时，可以直接包一下 `DataSource`：
+和 Spring 集成时，直接包一下 `DataSource`：
 
 ```java
 @Component
@@ -61,13 +58,11 @@ public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
 }
 ```
 
-这样看日志会踏实很多，至少能知道 SQL 到底是怎么发出去的。
+经过上面的包装可以知道 SQL 到底是如何发出去的。
 
-### 数据库这一层
+### 数据库层
 
-如果还想再确认一层，可以直接开 MySQL 的 `general_log`。
-
-这个方式很土，但是有时候很好用，因为它记录的是客户端实际执行过的 SQL。  
+MySQL 的 `general_log` 记录的是客户端实际执行过的 SQL。  
 不过调完记得关，不然日志会一直涨。
 
 ```sql
@@ -81,7 +76,7 @@ SET GLOBAL general_log_file = "L://logfile.log";
 SET GLOBAL log_output = "FILE";
 ```
 
-## 调的时候主要看什么
+## 调试参数
 
 Hibernate 这一套 batch 能不能生效，至少要先看下面几个配置：
 
@@ -107,8 +102,6 @@ spring:
 
 ## ID 策略的影响很大
 
-这一块基本是绕不过去的。
-
 JPA 里 `@GeneratedValue` 常见的几种策略：
 
 - `TABLE`
@@ -119,11 +112,11 @@ JPA 里 `@GeneratedValue` 常见的几种策略：
 ### `TABLE`
 
 可以理解成单独拿一张表管主键。  
-这个思路能用，但不太轻。如果很多表都靠它分配 ID，那锁竞争一般不会太好看。
+如果很多表都靠它分配 ID，那锁竞争一般不会太好。
 
 ### `SEQUENCE`
 
-这个更适合本身支持序列的数据库，比如 Oracle、PostgreSQL。
+适合本身支持序列的数据库，比如 Oracle、PostgreSQL。
 
 常见写法像这样：
 
@@ -140,53 +133,38 @@ JPA 里 `@GeneratedValue` 常见的几种策略：
 
 ### `IDENTITY`
 
-这个就是 MySQL 里最常见的 `AUTO_INCREMENT` 那套。
+MySQL 里最常见的 `AUTO_INCREMENT` 那套。
 
 问题也正出在这里：插入之前，Hibernate 并不知道最终生成的主键是多少；而它插完以后，又得把这个主键拿回来。
 
-所以很多时候，只要主键策略是 `IDENTITY`，真正的 batch 插入就很难做得起来。  
-这也是为什么很多人明明配了 `batch_size`，最后一看日志，还是一条一条在插。
+所以很多时候，只要主键策略是 `IDENTITY`，真正的 batch 插入就不太容易做。可能配了 `batch_size`，最后看日志，还是一条一条在插。
 
 ### `AUTO`
 
 这个就交给 Hibernate 自己选。
 
-如果你没有显式指定，而主键也不是代码里自己提前生成的，比如 UUID 这种，那最好还是确认一下它最后到底走了哪条路。
+如果没有显式指定，而主键也不是代码里自己提前生成的，比如 UUID 这种，那最好还是确认一下它最后到底走了哪条路。是从上述三种来挑选
 
-## `SEQUENCE` 和 `TABLE` 怎么看
+## `SEQUENCE` VS `TABLE` 
 
-从数据库实现上看，`SEQUENCE` 一般还是比 `TABLE` 更像一个适合做这件事的东西。
-
-简单记：
+从数据库的原语实现层面， SEQUENCE 要比 TABLE 性能好很多
 
 - MySQL 这边大多还是落到 `IDENTITY`
 - Oracle、PostgreSQL 更适合 `SEQUENCE`
 
-## 连接参数也别漏
+## 数据库连接的影响
 
-如果底层是 MySQL，连接串里还得看一眼有没有这个：
-
-`rewriteBatchedStatements=true`
-
-这个参数默认是 `false`。  
+如果底层是 MySQL，需要确认下连接参数 `rewriteBatchedStatements=true`，参数默认是 `false`。  
 不加的话，有时候应用这边看起来已经在按批组 SQL 了，但驱动层并不会替你按 batch 的方式去发。
 
-这一点挺容易漏。
+这一点比较容易漏。
 
 ## JPQL、HQL、NativeQuery
 
 这几个东西本身不会自动把普通写法变成 batch。
 
-如果你本来写的就是逐条操作，那别太指望 Hibernate 后面 magically 帮你拼成真正的批量。  
-真要做批量，通常还是得从写法和执行方式本身去处理。
+如果本来写的就是逐条操作，那不要指望 Hibernate 后面 magically 拼成真正的批量。
 
-## 批量更新
-
-批量更新这块比批量插入更别扭一点。
-
-先记个不太严谨但挺实用的结论：很多“看起来像批量更新”的东西，最后未必是真正意义上的 batch update。
-
-这块我这里先不展开，后面还得结合具体 SQL 日志再拆。
 
 ## 引用
 
