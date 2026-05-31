@@ -14,7 +14,14 @@
   {{ $pages = where $pages "Type" "not in" ($.Site.Params.excludedTypes | default (slice "page")) }}
   {{ $activePages := where $pages "Params.archive" "ne" true }}
   {{ $archivedPages := where $pages "Params.archive" true }}
-  {{ $pages = $activePages.ByDate.Reverse | append ($archivedPages.ByDate.Reverse) }}
+  {{ $activePinnedPages := where $activePages "Params.pinned" true }}
+  {{ $activeNormalPages := where $activePages "Params.pinned" "ne" true }}
+  {{ $archivedPinnedPages := where $archivedPages "Params.pinned" true }}
+  {{ $archivedNormalPages := where $archivedPages "Params.pinned" "ne" true }}
+  {{ $pages = $activePinnedPages.ByDate.Reverse
+    | append ($activeNormalPages.ByDate.Reverse)
+    | append ($archivedPinnedPages.ByDate.Reverse)
+    | append ($archivedNormalPages.ByDate.Reverse) }}
 
   <ul class="posts{{ if not $isTerm }} section-posts{{ end }}">
     {{ range $pages }}
