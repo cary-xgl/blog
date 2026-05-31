@@ -10,24 +10,26 @@
   {{ if eq (len $pages) 0 }}
     {{ $pages = .Pages }}
   {{ end }}
-  {{ $pages = $pages.ByWeight }}
+  {{ $pages = where $pages "Params.hidden" "ne" true }}
+  {{ $pages = where $pages "Type" "not in" ($.Site.Params.excludedTypes | default (slice "page")) }}
+  {{ $activePages := where $pages "Params.archive" "ne" true }}
+  {{ $archivedPages := where $pages "Params.archive" true }}
+  {{ $pages = $activePages.ByDate.Reverse | append ($archivedPages.ByDate.Reverse) }}
 
   <ul class="posts{{ if not $isTerm }} section-posts{{ end }}">
     {{ range $pages }}
-      {{ if and (not .Params.hidden) (not (in ($.Site.Params.excludedTypes | default (slice "page")) .Type)) }}
-        <li class="post{{ if .Params.pinned }} is-pinned{{ end }}">
-          {{ if $isTerm }}
+      <li class="post{{ if .Params.pinned }} is-pinned{{ end }}">
+        {{ if $isTerm }}
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <span class="meta">{{ dateFormat "2006-01-02" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</span>
+        {{ else }}
+          <span class="post-title-line">
             <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ if .Params.pinned }}<span class="pinned-label">置顶</span>{{ end }}
             <span class="meta">{{ dateFormat "2006-01-02" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</span>
-          {{ else }}
-            <span class="post-title-line">
-              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-              {{ if .Params.pinned }}<span class="pinned-label">置顶</span>{{ end }}
-              <span class="meta">{{ dateFormat "2006-01-02" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</span>
-            </span>
-          {{ end }}
-        </li>
-      {{ end }}
+          </span>
+        {{ end }}
+      </li>
     {{ end }}
   </ul>
 {{ end }}

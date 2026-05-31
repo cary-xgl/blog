@@ -13,7 +13,11 @@
 
         {{ $sections := .Site.Params.mainSections | default (slice "posts") }}
         {{ $pages := where .Site.RegularPages "Type" "in" $sections }}
-        {{ $paginator := .Paginate ((where $pages "Params.hidden" "ne" true).ByDate.Reverse) }}
+        {{ $pages = where $pages "Params.hidden" "ne" true }}
+        {{ $activePages := where $pages "Params.archive" "ne" true }}
+        {{ $archivedPages := where $pages "Params.archive" true }}
+        {{ $sortedPages := $activePages.ByDate.Reverse | append ($archivedPages.ByDate.Reverse) }}
+        {{ $paginator := .Paginate $sortedPages }}
         {{ range $paginator.Pages }}
           <section class="list-item">
             <h1 class="title">
