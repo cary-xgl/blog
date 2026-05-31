@@ -5,20 +5,22 @@ tags: ["Spring-Data-JPA"]
 categories: ["技术"]
 ---
 
-> 这篇主要记录一个很具体的问题：怎么判断 JPA 到底有没有真正执行批量操作。
+> 这篇主要记一下，怎么确认 JPA 到底有没有真的按 batch 在跑。
 <!--more-->
 
-以下内容基于：
+环境大概是：
 
 - MySQL 8.1
 - Hibernate 5.4
 
-## 如何确认是否真的执行了批量操作
+## 怎么确认是不是 batch
 
-### 代码层面
+### 代码这一层
 
-Hibernate 打出来的日志比较偏抽象，只看它输出的 SQL，不一定能判断数据库层面最终是怎么执行的。  
-所以这里更稳的办法，是在数据源这一层做代理，直接跟踪实际发出去的 SQL。
+只看 Hibernate 打出来的日志，其实不太够。  
+它打印的东西更像是 ORM 这一层“准备做什么”，不一定等价于数据库那边“最后怎么执行”。
+
+所以更直接一点的办法，是在数据源这一层挂代理，把真正发出去的 SQL 抓出来看。
 
 Maven 依赖：
 
@@ -32,7 +34,7 @@ Maven 依赖：
 <!-- see https://github.com/jdbc-observations/datasource-proxy -->
 ```
 
-和 Spring 集成时，可以直接包一层 `DataSource`：
+和 Spring 集成时，可以直接包一下 `DataSource`：
 
 ```java
 @Component
@@ -59,32 +61,33 @@ public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
 }
 ```
 
-这样可以更直接地看到 SQL 的执行情况，而不是只看 Hibernate 上层的日志。
+这样看日志会踏实很多，至少能知道 SQL 到底是怎么发出去的。
 
-### 数据库层面
+### 数据库这一层
 
-如果想再确认一层，可以直接打开 MySQL 的 `general_log`，把客户端实际执行过的 SQL 记下来。
+如果还想再确认一层，可以直接开 MySQL 的 `general_log`。
 
-不过这个日志一定要记得及时关闭，不然磁盘空间会涨得很快。
+这个方式很土，但是有时候很好用，因为它记录的是客户端实际执行过的 SQL。  
+不过调完记得关，不然日志会一直涨。
 
 ```sql
-# 开启日志记录，关闭时改为 OFF
+# 开启日志，关闭时改成 OFF
 SET GLOBAL general_log = 'ON';
 
-# 设置日志文件路径
+# 日志文件路径
 SET GLOBAL general_log_file = "L://logfile.log";
 
 # 输出到文件，也可以改成 TABLE
 SET GLOBAL log_output = "FILE";
 ```
 
-## 调试
+## 调的时候主要看什么
 
-根据 Hibernate 官方文档，JPA 在批量插入时主要受下面几个参数影响：
+Hibernate 这一套 batch 能不能生效，至少要先看下面几个配置：
 
 ![参数配置](image.png)
 
-例如可以这样配置：
+比如：
 
 ```yaml
 spring:
@@ -96,32 +99,33 @@ spring:
       hibernate.batch_versioned_data: true
 ```
 
-这里的意思是：
+这里比较关键的是 `hibernate.jdbc.batch_size`。
 
-- 每批最多按 4 条来处理
-- `insert` 和 `update` 会尽量按顺序整理，方便批量发送
+如果设成 `4`，然后你一次要插 10 条，那预期一般就是拆成三批：`4 + 4 + 2`。
 
-举个例子，如果一共要插入 10 条数据，`batch_size` 设成 4，那么预期上会被拆成 3 批：`4 + 4 + 2`。
+`order_inserts` 和 `order_updates` 也有用，它们会尽量把同类操作整理到一起，这样更容易批量发。
 
-### ID 生成策略的影响
+## ID 策略的影响很大
 
-JPA 里的 `@GeneratedValue` 常见有 4 种策略：
+这一块基本是绕不过去的。
+
+JPA 里 `@GeneratedValue` 常见的几种策略：
 
 - `TABLE`
 - `SEQUENCE`
 - `IDENTITY`
 - `AUTO`
 
-#### `TABLE`
+### `TABLE`
 
-可以理解成额外建一张表，用它来统一管理主键增长。  
-如果多个业务表都依赖这张表生成 ID，那么事务之间就会去竞争这张表上的锁，性能一般不会太好。
+可以理解成单独拿一张表管主键。  
+这个思路能用，但不太轻。如果很多表都靠它分配 ID，那锁竞争一般不会太好看。
 
-#### `SEQUENCE`
+### `SEQUENCE`
 
-要求数据库本身支持 `sequence`，例如 Oracle、PostgreSQL。
+这个更适合本身支持序列的数据库，比如 Oracle、PostgreSQL。
 
-通常会配合下面这种方式使用：
+常见写法像这样：
 
 ```java
 @SequenceGenerator(
@@ -131,60 +135,58 @@ JPA 里的 `@GeneratedValue` 常见有 4 种策略：
 )
 ```
 
-这里几个参数的含义分别是：
+这里的 `allocationSize` 可以理解成一次先拿一批 ID 过来用。  
+从 batch 角度看，这种方式通常会更顺一点。
 
-- `name`：生成器名称
-- `sequenceName`：数据库里的序列名
-- `allocationSize`：一次从序列里预分配多少个 ID
+### `IDENTITY`
 
-这种方式通常更适合和批量插入配合。
+这个就是 MySQL 里最常见的 `AUTO_INCREMENT` 那套。
 
-#### `IDENTITY`
+问题也正出在这里：插入之前，Hibernate 并不知道最终生成的主键是多少；而它插完以后，又得把这个主键拿回来。
 
-这种方式依赖数据库自己的自增列，比如 MySQL 的 `AUTO_INCREMENT`。
+所以很多时候，只要主键策略是 `IDENTITY`，真正的 batch 插入就很难做得起来。  
+这也是为什么很多人明明配了 `batch_size`，最后一看日志，还是一条一条在插。
 
-问题在于：插入前 Hibernate 并不知道主键值是多少，而它又需要在插入后拿回生成的主键。  
-因此在这种策略下，Hibernate 往往没法把这类插入真正合并成批量操作。
+### `AUTO`
 
-这也是为什么很多场景里，一旦主键策略用了 `IDENTITY`，批量插入就很难真正生效。
+这个就交给 Hibernate 自己选。
 
-#### `AUTO`
+如果你没有显式指定，而主键也不是代码里自己提前生成的，比如 UUID 这种，那最好还是确认一下它最后到底走了哪条路。
 
-由持久化提供方，也就是 Hibernate，自己决定最终使用哪一种策略。
+## `SEQUENCE` 和 `TABLE` 怎么看
 
-如果没有显式指定生成策略，而主键又不是业务侧提前生成的，例如代码里自己生成 UUID，那就要特别留意 Hibernate 最终替你选了什么。
+从数据库实现上看，`SEQUENCE` 一般还是比 `TABLE` 更像一个适合做这件事的东西。
 
-### `sequence` 和 `table`
+简单记：
 
-从数据库实现层面看，`sequence` 一般会比 `table` 方案更轻，也更适合高并发场景。
+- MySQL 这边大多还是落到 `IDENTITY`
+- Oracle、PostgreSQL 更适合 `SEQUENCE`
 
-简单总结一下：
+## 连接参数也别漏
 
-- 底层数据库是 MySQL：通常只能落在 `IDENTITY`
-- 底层数据库是 Oracle、PostgreSQL：更推荐 `SEQUENCE`
-
-### 数据库连接参数的影响
-
-如果底层是 MySQL，连接串里通常还需要显式加上：
+如果底层是 MySQL，连接串里还得看一眼有没有这个：
 
 `rewriteBatchedStatements=true`
 
 这个参数默认是 `false`。  
-不开的话，就算应用层面已经按批次组织好了语句，JDBC 驱动也可能不会按你预期的方式去重写和发送批量 SQL。
+不加的话，有时候应用这边看起来已经在按批组 SQL 了，但驱动层并不会替你按 batch 的方式去发。
 
-这一点经常被忽略。
+这一点挺容易漏。
 
-### JPQL、HQL、NativeQuery 的情况
+## JPQL、HQL、NativeQuery
 
-JPQL、HQL、NativeQuery 本身不会自动把普通写法“变成批量操作”。  
-如果要做真正的批量更新或批量插入，通常还是要从语句组织方式和执行方式本身来处理，不能只指望 Hibernate 自动优化。
+这几个东西本身不会自动把普通写法变成 batch。
+
+如果你本来写的就是逐条操作，那别太指望 Hibernate 后面 magically 帮你拼成真正的批量。  
+真要做批量，通常还是得从写法和执行方式本身去处理。
 
 ## 批量更新
 
-批量更新这一块相对更复杂。  
-目前这里先记一个结论：很多场景下看起来像“批量更新”，其实不一定是真正意义上的批量执行。
+批量更新这块比批量插入更别扭一点。
 
-这部分后面还需要结合更具体的 SQL 日志和测试案例再继续拆。
+先记个不太严谨但挺实用的结论：很多“看起来像批量更新”的东西，最后未必是真正意义上的 batch update。
+
+这块我这里先不展开，后面还得结合具体 SQL 日志再拆。
 
 ## 引用
 
