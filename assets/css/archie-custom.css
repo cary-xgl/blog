@@ -137,8 +137,11 @@ header nav {
   display: block;
   height: auto;
   margin: 0 auto;
-  max-width: 100%;
-  width: 100%;
+  max-width: 100% !important;
+  max-inline-size: 100% !important;
+  max-height: none !important;
+  max-block-size: none !important;
+  width: 100% !important;
 }
 
 .post-tags ul {
