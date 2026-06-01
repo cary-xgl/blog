@@ -5,6 +5,7 @@
 - 默认在完成代码、内容结构或配置改动，并通过必要验证后，将改动提交至 git。
 - 提交信息遵循 `docs/git-commit-convention.md` 中的规范。
 - 提交前先检查 `git status`，避免把无关改动混入当前提交。
+- 当前 Hugo 博客项目在本地开发时，提交前验证默认使用 `hugo` 或 `hugo --minify`，不使用 `--cleanDestinationDir`，避免把正在运行的 `hugo server` 状态冲掉。
 
 ## 主题定制
 
