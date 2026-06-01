@@ -127,6 +127,12 @@ header nav {
   text-align: center;
 }
 
+.body pre.mermaid {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
 .post-tags ul {
   display: flex;
   flex-wrap: wrap;
