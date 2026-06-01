@@ -128,8 +128,11 @@ header nav {
 }
 
 .body .mermaid svg {
+  display: block;
   height: auto;
-  max-width: 100%;
+  margin: 0 auto;
+  max-width: 760px;
+  width: 100% !important;
 }
 
 .post-tags ul {
