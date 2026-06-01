@@ -139,9 +139,9 @@ header nav {
   margin: 0 auto;
   max-width: 100% !important;
   max-inline-size: 100% !important;
-  max-height: none !important;
-  max-block-size: none !important;
-  width: 100% !important;
+  max-height: 500px !important;
+  max-block-size: 500px !important;
+  width: auto !important;
 }
 
 .post-tags ul {
