@@ -8,14 +8,15 @@
     securityLevel: 'loose',
     theme: prefersDark ? 'dark' : 'default',
     themeVariables: {
-      fontSize: '18px'
+      fontSize: '24px'
     },
     flowchart: {
       useMaxWidth: false,
       htmlLabels: false,
       curve: 'basis',
-      nodeSpacing: 40,
-      rankSpacing: 55
+      nodeSpacing: 70,
+      rankSpacing: 90,
+      padding: 24
     }
   });
 
@@ -32,7 +33,7 @@
       svg.style.height = 'auto';
       svg.style.display = 'block';
       svg.style.margin = '0 auto';
-      svg.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+      svg.setAttribute('preserveAspectRatio', 'xMidYMin meet');
     });
   };
 
