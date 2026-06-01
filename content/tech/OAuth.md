@@ -48,7 +48,7 @@ OAuth 是一个授权标准，重点是“授权”，不是“认证”。
 
 授权码模式最常见，先用它把整体流程过一遍。
 
-<div class="mermaid">
+<pre class="mermaid">
 flowchart LR
     U[User] --> C[Client]
     C -->|redirect for auth| A[Authorization Server]
@@ -57,7 +57,7 @@ flowchart LR
     A -->|access_token| C
     C -->|access_token| R[Resource Server]
     R -->|resource| C
-</div>
+</pre>
 
 流程大致是这样：
 
@@ -90,12 +90,12 @@ flowchart LR
 
 简化模式会直接把 `access_token` 放在重定向 URI 里返回，不再经过“先拿 code 再换 token”这一步。
 
-<div class="mermaid">
+<pre class="mermaid">
 flowchart LR
     U[User] --> C[Client]
     C -->|redirect for auth| A[Authorization Server]
     A -->|return access_token| C
-</div>
+</pre>
 
 特点：
 
@@ -107,12 +107,12 @@ flowchart LR
 
 密码模式最直接，用户把账号密码直接给客户端，客户端再拿着账号密码去认证服务器换 token。
 
-<div class="mermaid">
+<pre class="mermaid">
 flowchart LR
     U[User] -->|username + password| C[Client]
     C -->|username + password| A[Authorization Server]
     A -->|access_token| C
-</div>
+</pre>
 
 特点：
 
@@ -124,12 +124,12 @@ flowchart LR
 
 客户端模式不涉及用户，直接由客户端以自己的身份去申请 token。
 
-<div class="mermaid">
+<pre class="mermaid">
 flowchart LR
     C[Client] -->|client_id + client_secret| A[Authorization Server]
     A -->|access_token| C
     C -->|access_token| R[Resource Server]
-</div>
+</pre>
 
 特点：
 

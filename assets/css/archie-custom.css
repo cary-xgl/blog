@@ -122,20 +122,9 @@ header nav {
 }
 
 .body .mermaid {
-  display: flex;
-  justify-content: center;
   margin: 1.25rem 0 1.5rem;
   overflow-x: auto;
-  padding: 0.25rem 0;
-}
-
-.body .mermaid svg {
-  display: block;
-  height: auto;
-  margin: 0 auto;
-  max-width: none !important;
-  min-width: min(760px, 100%);
-  width: 100% !important;
+  text-align: center;
 }
 
 .post-tags ul {
