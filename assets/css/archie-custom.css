@@ -131,7 +131,7 @@ header nav {
   display: block;
   height: auto;
   margin: 0 auto;
-  max-width: 760px;
+  max-width: none !important;
   width: 100% !important;
 }
 
