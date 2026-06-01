@@ -1,40 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300">
   <defs>
     <style>
       .bg { fill: #fbfbfc; }
-      .box { fill: #ffffff; stroke: #222; stroke-width: 2; rx: 10; ry: 10; }
-      .text { font: 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #222; }
-      .label { font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #555; }
-      .arrow { stroke: #333; stroke-width: 2.2; fill: none; marker-end: url(#m); }
+      .box { fill: #fff; stroke: #222; stroke-width: 2; rx: 10; ry: 10; }
+      .title { font: 18px Arial, sans-serif; fill: #222; }
+      .label { font: 14px Arial, sans-serif; fill: #555; }
+      .line { stroke: #333; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
     </style>
-    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
       <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
     </marker>
   </defs>
-  <rect class="bg" width="960" height="260"/>
-  <rect class="box" x="60" y="80" width="150" height="56"/>
-  <rect class="box" x="290" y="80" width="150" height="56"/>
-  <rect class="box" x="520" y="80" width="180" height="56"/>
-  <rect class="box" x="780" y="80" width="150" height="56"/>
-  <text class="text" x="115" y="114">用户</text>
-  <text class="text" x="340" y="114">客户端</text>
-  <text class="text" x="565" y="114">认证服务器</text>
-  <text class="text" x="820" y="114">资源服务器</text>
-  <path class="arrow" d="M210 98 H290"/>
-  <text class="label" x="226" y="88">访问应用</text>
-  <path class="arrow" d="M440 98 H520"/>
-  <text class="label" x="454" y="88">跳转授权</text>
-  <path class="arrow" d="M520 132 H440"/>
-  <text class="label" x="448" y="156">返回 code</text>
-  <path class="arrow" d="M440 196 H520"/>
-  <text class="label" x="444" y="186">code + secret</text>
-  <path class="arrow" d="M520 226 H440"/>
-  <text class="label" x="448" y="248">access_token</text>
-  <path class="arrow" d="M440 98 H520"/>
-  <path class="arrow" d="M440 98 H520" opacity="0"/>
-  <path class="arrow" d="M440 98 H520" opacity="0"/>
-  <path class="arrow" d="M440 196 H780"/>
-  <text class="label" x="570" y="186">access_token 取资源</text>
-  <path class="arrow" d="M780 226 H440"/>
-  <text class="label" x="620" y="248">返回资源</text>
+
+  <rect class="bg" width="960" height="300"/>
+
+  <rect class="box" x="60" y="70" width="150" height="52"/>
+  <rect class="box" x="300" y="70" width="150" height="52"/>
+  <rect class="box" x="540" y="70" width="180" height="52"/>
+  <rect class="box" x="780" y="70" width="150" height="52"/>
+
+  <text class="title" x="117" y="102">User</text>
+  <text class="title" x="346" y="102">Client</text>
+  <text class="title" x="575" y="102">Auth Server</text>
+  <text class="title" x="807" y="102">Resource API</text>
+
+  <path class="line" d="M210 88 H300"/>
+  <text class="label" x="226" y="76">1. Open app</text>
+
+  <path class="line" d="M450 88 H540"/>
+  <text class="label" x="462" y="76">2. Redirect for auth</text>
+
+  <path class="line" d="M540 122 H450"/>
+  <text class="label" x="474" y="146">3. Return code</text>
+
+  <path class="line" d="M450 188 H540"/>
+  <text class="label" x="455" y="176">4. code + client_secret</text>
+
+  <path class="line" d="M540 222 H450"/>
+  <text class="label" x="466" y="246">5. access_token</text>
+
+  <path class="line" d="M450 188 H780"/>
+  <text class="label" x="595" y="176">6. Use token</text>
+
+  <path class="line" d="M780 222 H450"/>
+  <text class="label" x="618" y="246">7. Return resource</text>
 </svg>
