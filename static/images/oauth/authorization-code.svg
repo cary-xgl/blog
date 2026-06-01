@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="720" viewBox="0 0 960 720">
+  <defs>
+    <style>
+      .bg { fill: #fbfbfc; }
+      .box { fill: #fff; stroke: #222; stroke-width: 2; rx: 12; ry: 12; }
+      .title { font: 26px Arial, sans-serif; fill: #222; }
+      .label { font: 20px Arial, sans-serif; fill: #444; }
+      .step { font: 18px Arial, sans-serif; fill: #666; }
+      .line { stroke: #333; stroke-width: 2.6; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="720"/>
+
+  <rect class="box" x="80" y="70" width="170" height="60"/>
+  <rect class="box" x="395" y="70" width="170" height="60"/>
+  <rect class="box" x="710" y="70" width="170" height="60"/>
+  <text class="title" x="140" y="108">User</text>
+  <text class="title" x="442" y="108">Client</text>
+  <text class="title" x="730" y="108">Auth Server</text>
+
+  <path class="line" d="M250 160 H395"/>
+  <text class="step" x="292" y="150">1</text>
+  <text class="label" x="275" y="190">Open app</text>
+
+  <path class="line" d="M565 240 H710"/>
+  <text class="step" x="607" y="230">2</text>
+  <text class="label" x="560" y="270">Redirect for auth</text>
+
+  <path class="line" d="M710 330 H565"/>
+  <text class="step" x="632" y="320">3</text>
+  <text class="label" x="610" y="360">Return code</text>
+
+  <path class="line" d="M565 430 H710"/>
+  <text class="step" x="607" y="420">4</text>
+  <text class="label" x="520" y="460">code + client_secret</text>
+
+  <path class="line" d="M710 520 H565"/>
+  <text class="step" x="632" y="510">5</text>
+  <text class="label" x="575" y="550">access_token</text>
+
+  <rect class="box" x="710" y="610" width="170" height="60"/>
+  <text class="title" x="720" y="648">Resource API</text>
+  <path class="line" d="M565 620 H710"/>
+  <text class="step" x="607" y="610">6</text>
+  <text class="label" x="560" y="650">Use token</text>
+</svg>

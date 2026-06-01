@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480">
+  <defs>
+    <style>
+      .bg { fill: #fbfbfc; }
+      .box { fill: #fff; stroke: #222; stroke-width: 2; rx: 12; ry: 12; }
+      .title { font: 26px Arial, sans-serif; fill: #222; }
+      .label { font: 20px Arial, sans-serif; fill: #444; }
+      .line { stroke: #333; stroke-width: 2.6; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="480"/>
+  <rect class="box" x="90" y="70" width="170" height="60"/>
+  <rect class="box" x="395" y="70" width="170" height="60"/>
+  <rect class="box" x="700" y="70" width="180" height="60"/>
+  <text class="title" x="150" y="108">User</text>
+  <text class="title" x="442" y="108">Client</text>
+  <text class="title" x="720" y="108">Auth Server</text>
+
+  <path class="line" d="M260 220 H395"/>
+  <text class="label" x="283" y="250">1. Open app</text>
+
+  <path class="line" d="M565 220 H700"/>
+  <text class="label" x="560" y="250">2. Redirect for auth</text>
+
+  <path class="line" d="M700 340 H565"/>
+  <text class="label" x="575" y="370">3. Return access_token</text>
+</svg>
