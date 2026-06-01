@@ -4,13 +4,41 @@
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   mermaid.initialize({
-    startOnLoad: true,
+    startOnLoad: false,
     securityLevel: 'loose',
     theme: prefersDark ? 'dark' : 'default',
+    themeVariables: {
+      fontSize: '18px'
+    },
     flowchart: {
       useMaxWidth: false,
       htmlLabels: false,
-      curve: 'basis'
+      curve: 'basis',
+      nodeSpacing: 40,
+      rankSpacing: 55
     }
   });
+
+  const mountMermaid = async () => {
+    await mermaid.run({
+      querySelector: '.mermaid'
+    });
+
+    document.querySelectorAll('.mermaid svg').forEach((svg) => {
+      svg.removeAttribute('height');
+      svg.removeAttribute('width');
+      svg.style.width = '100%';
+      svg.style.maxWidth = '100%';
+      svg.style.height = 'auto';
+      svg.style.display = 'block';
+      svg.style.margin = '0 auto';
+      svg.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountMermaid, { once: true });
+  } else {
+    mountMermaid();
+  }
 </script>
