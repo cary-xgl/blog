@@ -133,6 +133,14 @@ header nav {
   padding: 0;
 }
 
+.body .mermaid svg {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+}
+
 .post-tags ul {
   display: flex;
   flex-wrap: wrap;
