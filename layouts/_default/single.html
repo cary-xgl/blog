@@ -32,6 +32,10 @@
           {{ .Content }}
         </section>
 
+        {{ if .Params.mermaid }}
+          {{ partial "mermaid.html" . }}
+        {{ end }}
+
         {{ with .Params.tags }}
           <div class="post-tags">
             <nav class="nav tags">

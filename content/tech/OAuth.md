@@ -3,6 +3,7 @@ title: "OAuth"
 date: 2020-04-28
 tags: ["OAuth", "认证授权"]
 categories: ["技术"]
+mermaid: true
 ---
 
 > OAuth 的几种授权模式
@@ -47,7 +48,16 @@ OAuth 是一个授权标准，重点是“授权”，不是“认证”。
 
 授权码模式最常见，先用它把整体流程过一遍。
 
-<img src="/images/oauth/authorization-code.svg" alt="OAuth 授权码模式流程" style="width: 100%; max-width: 760px; height: auto;">
+<div class="mermaid">
+flowchart LR
+    U[User] --> C[Client]
+    C -->|redirect for auth| A[Authorization Server]
+    A -->|return code| C
+    C -->|code + client_secret| A
+    A -->|access_token| C
+    C -->|access_token| R[Resource Server]
+    R -->|resource| C
+</div>
 
 流程大致是这样：
 
@@ -80,7 +90,12 @@ OAuth 是一个授权标准，重点是“授权”，不是“认证”。
 
 简化模式会直接把 `access_token` 放在重定向 URI 里返回，不再经过“先拿 code 再换 token”这一步。
 
-<img src="/images/oauth/implicit.svg" alt="简化模式" style="width: 100%; max-width: 760px; height: auto;">
+<div class="mermaid">
+flowchart LR
+    U[User] --> C[Client]
+    C -->|redirect for auth| A[Authorization Server]
+    A -->|return access_token| C
+</div>
 
 特点：
 
@@ -92,7 +107,12 @@ OAuth 是一个授权标准，重点是“授权”，不是“认证”。
 
 密码模式最直接，用户把账号密码直接给客户端，客户端再拿着账号密码去认证服务器换 token。
 
-<img src="/images/oauth/password.svg" alt="密码模式" style="width: 100%; max-width: 760px; height: auto;">
+<div class="mermaid">
+flowchart LR
+    U[User] -->|username + password| C[Client]
+    C -->|username + password| A[Authorization Server]
+    A -->|access_token| C
+</div>
 
 特点：
 
@@ -104,7 +124,12 @@ OAuth 是一个授权标准，重点是“授权”，不是“认证”。
 
 客户端模式不涉及用户，直接由客户端以自己的身份去申请 token。
 
-<img src="/images/oauth/client-credentials.svg" alt="客户端模式" style="width: 100%; max-width: 760px; height: auto;">
+<div class="mermaid">
+flowchart LR
+    C[Client] -->|client_id + client_secret| A[Authorization Server]
+    A -->|access_token| C
+    C -->|access_token| R[Resource Server]
+</div>
 
 特点：
 

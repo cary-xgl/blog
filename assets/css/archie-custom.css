@@ -121,6 +121,17 @@ header nav {
   padding-left: 1rem;
 }
 
+.body .mermaid {
+  margin: 1.25rem 0 1.5rem;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.body .mermaid svg {
+  height: auto;
+  max-width: 100%;
+}
+
 .post-tags ul {
   display: flex;
   flex-wrap: wrap;
