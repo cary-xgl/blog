@@ -47,18 +47,7 @@ OAuth 的核心思路，就是在客户端和服务提供方之间加一层授�
 
 授权码模式最常见，可以先用它把整体流程过一遍。
 
-```text
-用户 -> 客户端 -> 认证服务器
-               <- 授权码 -
-
-客户端 -> 认证服务器
-        (client_id + client_secret + code)
-               <- access_token / refresh_token -
-
-客户端 -> 资源服务器
-        (access_token)
-               <- 资源 -
-```
+<img src="/images/oauth/authorization-code.svg" alt="OAuth 授权码模式流程" style="width: 100%; max-width: 760px; height: auto;">
 
 大致流程是这样：
 
@@ -81,13 +70,7 @@ OAuth 的核心思路，就是在客户端和服务提供方之间加一层授�
 
 这是最常见的一种。
 
-```text
-用户 -> 客户端 -> 认证服务器 -> 用户确认授权
-用户 <- 客户端 <- 认证服务器(code)
-客户端 -> 认证服务器(code + client_secret)
-客户端 <- 认证服务器(access_token)
-客户端 -> 资源服务器(access_token)
-```
+<img src="/images/oauth/authorization-code.svg" alt="授权码模式" style="width: 100%; max-width: 760px; height: auto;">
 
 特点：
 
@@ -99,10 +82,7 @@ OAuth 的核心思路，就是在客户端和服务提供方之间加一层授�
 
 简化模式会直接把 `access_token` 放在重定向 URI 里返回，不再经过“先拿 code 再换 token”这一步。
 
-```text
-用户 -> 客户端 -> 认证服务器 -> 用户确认授权
-用户 <- 客户端 <- 认证服务器(access_token)
-```
+<img src="/images/oauth/implicit.svg" alt="简化模式" style="width: 100%; max-width: 760px; height: auto;">
 
 特点：
 
@@ -114,11 +94,7 @@ OAuth 的核心思路，就是在客户端和服务提供方之间加一层授�
 
 密码模式最直接，用户把账号密码直接给客户端，客户端再拿着账号密码去认证服务器换 token。
 
-```text
-用户 -> 客户端(username + password)
-客户端 -> 认证服务器(username + password)
-客户端 <- 认证服务器(access_token)
-```
+<img src="/images/oauth/password.svg" alt="密码模式" style="width: 100%; max-width: 760px; height: auto;">
 
 特点：
 
@@ -130,11 +106,7 @@ OAuth 的核心思路，就是在客户端和服务提供方之间加一层授�
 
 客户端模式不涉及用户，直接由客户端以自己的身份去申请 token。
 
-```text
-客户端 -> 认证服务器(client_id + client_secret)
-客户端 <- 认证服务器(access_token)
-客户端 -> 资源服务器(access_token)
-```
+<img src="/images/oauth/client-credentials.svg" alt="客户端模式" style="width: 100%; max-width: 760px; height: auto;">
 
 特点：
 
