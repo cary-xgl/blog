@@ -5,7 +5,7 @@ tags: ["JPA", "Hibernate"]
 categories: ["技术"]
 ---
 
-> JPA、缓存、对象状态、继承策略这几个点，平时容易混
+> JPA中的缓存、对象状态、继承策略...
 <!--more-->
 
 ## JPA、Spring Data JPA、Hibernate
@@ -16,7 +16,6 @@ categories: ["技术"]
 - `Hibernate` 是对这套规范的一种实现
 - `Spring Data JPA` 是更上面一层的封装，底下通常还是会落到 `Hibernate`
 
-所以平时说“用了 JPA”，很多时候真正跑起来的还是 `Hibernate`。
 
 ## SQL 注入
 
