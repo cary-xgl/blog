@@ -5,7 +5,7 @@ tags: ["加密", "Hash"]
 categories: ["技术"]
 ---
 
-> 先记一下 Hash、摘要和彩虹表
+> Hash、摘要和彩虹表
 <!--more-->
 
 ## Hash 的不可逆
