@@ -8,7 +8,7 @@ categories: ["技术"]
 > binlog、redo log、undo log
 <!--more-->
 
-## mysql三种日志
+## MySQL 三种日志
 
 binlog 是 server 层的，redo log 和 undo log 是引擎层的，主要说的就是 InnoDB 这套。
 
@@ -39,7 +39,7 @@ binlog 什么时候刷盘，主要看 `sync_binlog`，取值范围是 `0-N`，�
 
 binlog 的记录格式一般就是 `ROW`、`STATEMENT`、`MIXED` 这几种。
 
-### redo log 重做日志
+### redo log
 
 为什么需要 redo log。
 
