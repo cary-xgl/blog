@@ -1,11 +1,11 @@
----
+﻿---
 title: "如何解决Spring循环依赖"
 date: 2022-04-23
 tags: ["Spring"]
 categories: ["技术"]
 ---
 
-> 记一下 Spring 怎么兜属性注入下的循环依赖。
+> Spring 属性注入下的循环依赖。
 <!--more-->
 
 ## 前提
@@ -14,7 +14,6 @@ categories: ["技术"]
 - B 也依赖 A
 - 两边都是属性注入
 
-构造器注入不在这篇里。那种情况 Spring 兜不住。
 
 ## 三级缓存里放的是什么
 
@@ -86,16 +85,13 @@ protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, 
 
 拿出来之后，Spring 会把这个对象从三级缓存挪到二级缓存，表示它已经提前暴露过了。
 
-## 后面的流程
-
-后面就顺了：
+然后
 
 - B 拿到 A，完成自己的属性填充
 - B 初始化完成，进入一级缓存
 - 回到 A，继续完成属性填充
 - A 初始化完成，也进入一级缓存。
 
-这一轮就走通了。
 
 ## 为什么二级缓存不够，还要三级缓存
 
@@ -121,5 +117,3 @@ protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, 
 有 AOP 时，只是 A 的代理对象创建时机变了。
 
 没 AOP 时，提前暴露出去的本来就是原对象，二级和三级在结果上也没什么差别。
-
-所以三级缓存主要是在兜流程，不是在提速。
