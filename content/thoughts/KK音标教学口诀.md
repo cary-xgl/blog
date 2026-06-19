@@ -6,8 +6,9 @@ categories: ["随想"]
 ---
 
 
-> 来自 周育如 的音标教学
+> 来自 周育如 的 [音标教学](https://www.bilibili.com/video/BV1Vb4y1679U/)
 <!--more-->
+
 
 ## 一、五个元音字母的短音
 
