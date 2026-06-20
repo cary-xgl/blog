@@ -36,6 +36,10 @@
           {{ partial "mermaid.html" . }}
         {{ end }}
 
+        {{ if .Params.math }}
+          {{ partial "math.html" . }}
+        {{ end }}
+
         {{ with .Params.tags }}
           <div class="post-tags">
             <nav class="nav tags">
