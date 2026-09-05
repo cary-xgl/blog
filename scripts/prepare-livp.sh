@@ -21,19 +21,37 @@ for livp_file in "$@"; do
 
   unzip -q "$livp_file" -d "$work_dir"
 
-  if [[ ! -f "$work_dir/livephoto_temp.heic" || ! -f "$work_dir/livephoto_temp.mov" ]]; then
-    print -u2 "LIVP 中未找到 livephoto_temp.heic 和 livephoto_temp.mov: $livp_file"
+  image_file=$(find "$work_dir" -type f \( \
+    -iname "*.heic" -o -iname "*.jpg" -o -iname "*.jpeg" \
+  \) -print -quit)
+  video_file=$(find "$work_dir" -type f -iname "*.mov" -print -quit)
+
+  if [[ -z "$image_file" || -z "$video_file" ]]; then
+    print -u2 "LIVP 中未找到 HEIC/JPG 图片或 MOV 视频: $livp_file"
     rm -rf -- "$work_dir"
     exit 1
   fi
 
-  qlmanage -t -s 2400 -o "$preview_dir" "$work_dir/livephoto_temp.heic" >/dev/null
-  sips -s format jpeg -s formatOptions high \
-    "$preview_dir/livephoto_temp.heic.png" \
-    --out "$output_dir/$output_name.jpg" >/dev/null
+  image_type=$(file -b --mime-type "$image_file")
+  case "$image_type" in
+    image/jpeg)
+      cp "$image_file" "$output_dir/$output_name.jpg"
+      ;;
+    image/heic|image/heif)
+      qlmanage -t -s 2400 -o "$preview_dir" "$image_file" >/dev/null
+      sips -s format jpeg -s formatOptions high \
+        "$preview_dir/${image_file:t}.png" \
+        --out "$output_dir/$output_name.jpg" >/dev/null
+      ;;
+    *)
+      print -u2 "LIVP 中的图片格式不受支持 ($image_type): $livp_file"
+      rm -rf -- "$work_dir"
+      exit 1
+      ;;
+  esac
 
   /usr/bin/avconvert \
-    --source "$work_dir/livephoto_temp.mov" \
+    --source "$video_file" \
     --preset PresetAppleM4V720pHD \
     --output "$work_dir/livephoto_temp.m4v" \
     --replace >/dev/null
