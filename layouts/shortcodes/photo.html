@@ -1,0 +1,26 @@
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" | default "" -}}
+{{- $resource := .Page.Resources.GetMatch $src -}}
+{{- if not $resource -}}
+  {{- errorf "photo shortcode: %q not found in page resources for %s" $src .Page.File.Path -}}
+{{- end -}}
+
+{{- if eq (lower (path.Ext $src)) ".livp" -}}
+  {{- $base := strings.TrimSuffix (path.Ext $src) $src -}}
+  {{- $poster := .Page.Resources.GetMatch (printf "%s.jpg" $base) -}}
+  {{- $video := .Page.Resources.GetMatch (printf "%s.mp4" $base) -}}
+  {{- if not $poster -}}
+    {{- errorf "photo shortcode: poster for %q not found in page resources for %s" $src .Page.File.Path -}}
+  {{- end -}}
+  {{- if not $video -}}
+    {{- errorf "photo shortcode: video for %q not found in page resources for %s" $src .Page.File.Path -}}
+  {{- end -}}
+  <span class="photo-media live-photo" data-live-photo role="group" aria-label="{{ $alt }}">
+    <video poster="{{ $poster.RelPermalink }}" muted playsinline loop preload="metadata" aria-label="{{ $alt }}">
+      <source src="{{ $video.RelPermalink }}" type="video/mp4">
+    </video>
+    <button class="live-photo-toggle" type="button" aria-label="播放实况照片" aria-pressed="false">LIVE</button>
+  </span>
+{{- else -}}
+  <img class="photo-media photo-image" src="{{ $resource.RelPermalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+{{- end -}}

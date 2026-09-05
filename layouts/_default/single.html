@@ -64,4 +64,7 @@
     {{ partial "utterances.html" . }}
   </article>
 </main>
+{{ if .HasShortcode "photo" }}
+  <script defer src="{{ "js/live-photo.js" | relURL }}"></script>
+{{ end }}
 {{ end }}
